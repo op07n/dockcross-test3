@@ -28,7 +28,7 @@ jobs:
             ls
             xcross ./autogen.sh 
             ls
-            xcross ./configure --host=i386-pc-mingw32
+            xcross env LDFLAGS="-L./ -L./mingw32/lib/" ./configure --host=i386-pc-mingw32
             ls
             xcross make
             ls -la src/
