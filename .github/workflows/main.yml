@@ -1,0 +1,34 @@
+
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: windytan/redsea.git
+        path: main   
+
+    - name: install
+      run:  sudo apt install build-essential autoconf
+
+    - name: autogen
+      run: |
+            docker run --rm dockcross/windows-shared-x86 > ./xcross; chmod +x ./xcross; sudo mv ./xcross /usr/bin/
+            wget 'https://github.com/cjcliffe/CubicSDR/raw/master/external/liquid-dsp/gcc/32/libliquid.a'
+            wget 'https://github.com/cjcliffe/CubicSDR/raw/master/external/liquid-dsp/gcc/32/libliquid.dll'
+            wget 'http://repo.msys2.org/mingw/i686/mingw-w64-i686-libsndfile-1.0.28-1-any.pkg.tar.xz'
+            tar xvf mingw-w64-i686-libsndfile-1.0.28-1-any.pkg.tar.xz
+            cd /home/runner/work/dockcross-test3/dockcross-test3/main
+            xcross ./autogen.sh 
+            ls
+            xcross ./configure
+            ls
+            xcross make
+            ls -la src/
+
